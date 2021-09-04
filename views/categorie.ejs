@@ -1,0 +1,70 @@
+<% 
+function timeDifference(current, previous) {
+
+var msPerMinute = 60 * 1000;
+var msPerHour = msPerMinute * 60;
+var msPerDay = msPerHour * 24;
+var msPerMonth = msPerDay * 30;
+var msPerYear = msPerDay * 365;
+
+var elapsed = current - previous;
+
+if (elapsed < msPerMinute) {
+     return Math.round(elapsed/1000) + ' seconds ago';   
+}
+
+else if (elapsed < msPerHour) {
+     return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+}
+
+else if (elapsed < msPerDay ) {
+     return Math.round(elapsed/msPerHour ) + ' hours ago';   
+}
+
+else if (elapsed < msPerMonth) {
+    return Math.round(elapsed/msPerDay) + ' days ago';   
+}
+
+else if (elapsed < msPerYear) {
+    return Math.round(elapsed/msPerMonth) + ' months ago';   
+}
+
+else {
+    return Math.round(elapsed/msPerYear ) + ' years ago';   
+}
+}
+%> 
+<h1 class="mb-5"><%= judul %></h1>
+<% if (result.posts.length > 0) { %>
+    <div class="card mb-3">
+        <img src="https://source.unsplash.com/1200x400?<%= result.name %>" class="card-img-top" alt="latest blog image">
+        <div class="card-body text-center">
+          <h3 class="card-title"><a href="/blog/<%= result.posts[0].slug %>" class="text-decoration-none text-dark"><%= result.posts[0].title %></a></h3>
+          <p><small class="text-muted">By. <a href="/blog/author/<%= result.posts[0].author.name %>" class="text-decoration-none"><%= result.posts[0].author.name %></a> in <a href="/blog/categories/<%= result.slug %>" class="text-decoration-none"><%= result.name %></a> <%= timeDifference(Date.now(),result.posts[0].created) %> </small></p>
+          <p class="card-text"><%= result.posts[0].excerpt %></p>
+          <a href="/blog/<%= result.posts[0].slug %>" class="text-decoration-none btn btn-primary">Read more</a>
+        </div>
+      </div>
+      <div class="container">
+          <div class="row">
+            <% result.posts.forEach((post,i) => { %>
+                    <% if(i != 0) { %>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="position-absolute px-3 py-2" style="background-color: rgba(0, 0, 0, .7);"><a href="/blog/categories/<%= result.slug %>" class="text-white text-decoration-none"><%= result.name %></a></div>
+                                <img src="https://source.unsplash.com/500x500?<%= result.name %>" class="card-img-top" alt="<%= result.name %>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= post.title %></h5>
+                                    <p><small class="text-muted">By. <a href="/blog/author/<%= post.author.name %>" class="text-decoration-none"><%= post.author.name %></a> <%= timeDifference(Date.now(),post.created) %> </small></p>
+                                    <p class="card-text"><%= post.excerpt %></p>
+                                    <a href="/blog/<%= post.slug %>" class="btn btn-primary">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+            </div>
+        </div>
+<% }else{ %>
+    <p class="text-center fs-4">No post found.</p>
+<% } %> 

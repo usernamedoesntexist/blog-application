@@ -1,0 +1,60 @@
+<div class="container-fluid mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" id="title" value="<% if(typeof data != 'undefined'){ %><%= data.title %><% } %>">
+                    <% if(typeof errors != 'undefined'){ %> 
+                        <% if(typeof errors.find(element => element.param == 'title') != 'undefined'){ %> 
+                            <small class="text-danger"><%= errors.find(element => element.param == 'title').msg %></small>
+                        <% } %> 
+                    <% } %> 
+                </div>
+                <div class="mb-3">
+                    <label for="slug" class="form-label">Slug</label>
+                    <input type="text" class="form-control" name="slug" id="slug" value="<% if(typeof data != 'undefined'){ %><%= data.slug %><% } %>">
+                    <% if(typeof errors != 'undefined'){ %> 
+                        <% if(typeof errors.find(element => element.param == 'slug') != 'undefined'){ %> 
+                            <small class="text-danger"><%= errors.find(element => element.param == 'slug').msg %></small>
+                        <% } %> 
+                    <% } %> 
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label d-block">Category</label>
+                    <select class="form-select" aria-label="Default select example" id="category" name="categorie">
+                        <option selected disabled hidden>Select Category</option>
+                        <% categories.forEach(categorie => { %>
+                            <% if (typeof data != 'undefined') { %>
+                                <% if (data.categorie == categorie._id) { %>
+                                    <option value="<%= categorie._id %>" selected><%= categorie.name %></option>
+                                <% }else{ %>
+                                    <option value="<%= categorie._id %>"><%= categorie.name %></option>
+                                <% } %> 
+                            <% }else{ %>
+                                <option value="<%= categorie._id %>"><%= categorie.name %></option>
+                            <% } %> 
+                        <% }) %>
+                    </select>
+                    <% if(typeof errors != 'undefined'){ %> 
+                        <% if(typeof errors.find(element => element.param == 'categorie') != 'undefined'){ %> 
+                            <small class="text-danger"><%= errors.find(element => element.param == 'categorie').msg %></small>
+                        <% } %> 
+                    <% } %> 
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="form-label">Body</label>
+                    <input id="body" type="hidden" name="body" value="<% if(typeof data != 'undefined'){ %><%= data.body %><% } %>">
+                    <trix-editor input="body"></trix-editor>
+                    <% if(typeof errors != 'undefined'){ %> 
+                        <% if(typeof errors.find(element => element.param == 'body') != 'undefined'){ %> 
+                            <small class="text-danger"><%= errors.find(element => element.param == 'body').msg %></small>
+                        <% } %> 
+                    <% } %> 
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

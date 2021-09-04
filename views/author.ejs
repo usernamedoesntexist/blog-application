@@ -1,0 +1,7 @@
+<h1 class="mb-5">Author : <%= blogs[0].author.name %></h1>
+<% blogs.forEach(post => { %>
+    <article>
+        <h2><a href="/blog/<%= post.slug %>" class="text-decoration-none"><%= post.title %></a></h2>
+        <p><%= post.excerpt %> </p>
+    </article>
+<% }) %>

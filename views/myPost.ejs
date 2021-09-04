@@ -1,0 +1,88 @@
+<% 
+function timeDifference(current, previous) {
+
+var msPerMinute = 60 * 1000;
+var msPerHour = msPerMinute * 60;
+var msPerDay = msPerHour * 24;
+var msPerMonth = msPerDay * 30;
+var msPerYear = msPerDay * 365;
+
+var elapsed = current - previous;
+
+if (elapsed < msPerMinute) {
+     return Math.round(elapsed/1000) + ' seconds ago';   
+}
+
+else if (elapsed < msPerHour) {
+     return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+}
+
+else if (elapsed < msPerDay ) {
+     return Math.round(elapsed/msPerHour ) + ' hours ago';   
+}
+
+else if (elapsed < msPerMonth) {
+    return Math.round(elapsed/msPerDay) + ' days ago';   
+}
+
+else if (elapsed < msPerYear) {
+    return Math.round(elapsed/msPerMonth) + ' months ago';   
+}
+
+else {
+    return Math.round(elapsed/msPerYear ) + ' years ago';   
+}
+}
+%> 
+<div class="container-fluid mb-3">
+  <% if (msg.length != 0) { %>
+      <div class="alert alert-success" role="alert">
+          <%= msg %> 
+      </div>
+  <% } %>
+<!-- Example split danger button -->
+  <!-- Page Heading -->
+  <h1 class="h3 mb-3 text-gray-800">My Posts</h1>
+  <a href="/my-post/create" class="btn btn-primary mb-4">Create new post</a>
+  <div class="list-group">
+      <% posts.forEach(post => { %>
+          <li class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= post.title %></h5>
+                <div class="btn-group">
+                  <button type="button" class="btn dropdown-toggle dropdown-toggle-split badge rounded-pill align-self-start" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/blog/<%= post.slug %>">View</a>
+                    <a class="dropdown-item" href="/my-post/edit/<%= post._id %>">Edit</a>
+                    <a class="dropdown-item" href="/my-post/delete/<%= post._id %>">Delete</a>
+                  </div>
+                </div>
+            </div>
+            <p class="mb-1"><%= post.excerpt %> </p>
+            <small class="text-muted"><%= timeDifference(Date.now(),post.published) %></small>
+          </li>
+      <% }) %>
+    </div>
+    <% if (jumlahHalaman > 1) { %>
+      <nav aria-label="Page navigation example" class="my-4">
+          <ul class="pagination">
+              <% if (page > 1) { %>
+                  <li class="page-item"><a class="page-link" href="?page=<%= page-1 %><%= query.search ? `&search=${query.search}` : '' %><%= query.author ? `&author=${query.author}` : '' %><%= query.categorie ? `&categorie=${query.categorie}` : '' %>">Previous</a></li>
+              <% } %>
+              <% for( let i = 0; i < jumlahHalaman; i++ ) { %>
+                  <li class="page-item <%= page == i+1 ? 'active' : '' %>"><a class="page-link" href="?page=<%= i+1 %><%= query.search ? `&search=${query.search}` : '' %><%= query.author ? `&author=${query.author}` : '' %><%= query.categorie ? `&categorie=${query.categorie}` : '' %>"><%= i+1 %></a></li>
+              <% } %>
+              <% if (page < jumlahHalaman) { %>
+                  <li class="page-item"><a class="page-link" href="?page=<%= page+1 %><%= query.search ? `&search=${query.search}` : '' %><%= query.author ? `&author=${query.author}` : '' %><%= query.categorie ? `&categorie=${query.categorie}` : '' %>">Next</a></li>
+              <% } %>
+          </ul>
+        </nav>
+  <% } %>
+    <% if (posts.length < 1) { %>
+      <p class="text-center">No post found</p>
+    <% } %>
+</div>
+<!-- /.container-fluid -->
+
+</div>
